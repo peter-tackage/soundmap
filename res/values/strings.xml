@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">SoundMap</string>
+  <string name="welcome_message">Map goes here</string>
+  <string name="menu_refresh">Refresh</string>
+</resources>
