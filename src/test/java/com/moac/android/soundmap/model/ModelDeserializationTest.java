@@ -1,10 +1,14 @@
 package com.moac.android.soundmap.model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,12 +16,41 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(JUnit4.class)
 public class ModelDeserializationTest {
 
+    /**
+     * Warning - the JSON returned from the SoundCloud API console
+     * doesn't have the double quotes escaped! Keep that in mind when
+     * copying test data from it - you may be better off getting it from the
+     * API directly.
+     * */
+
     @Test
-    public void testTrackJsonDeserialisation() throws IOException {
+    public void testTracksJsonDeserialisation() throws IOException {
+        String json = readTestDataFile("tracks.json");
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<Collection<Track>>(){}.getType();
+        Collection<Track> tracks = gson.fromJson(json, collectionType);
+        assertNotNull(tracks);
+        assertEquals(4, tracks.size());
     }
 
     @Test
-    public void testUserJsonDeserialisation() throws IOException {
+    public void testTrackSingleJsonDeserialisation() throws IOException {
+        String json = readTestDataFile("track_single.json");
+        Gson gson = new Gson();
+        Type trackType = new TypeToken<Track>(){}.getType();
+
+        Track track = gson.fromJson(json, trackType);
+        assertNotNull(track);
+        assertEquals("Dj Niko Force", track.getTitle());
+        assertEquals("https://i1.sndcdn.com/artworks-000052237226-1guyjw-large.jpg?cc07a88", track.getArtworkUrl());
+        assertEquals("https://w1.sndcdn.com/sPNv4LFoR9b7_m.png", track.getWaveformUrl());
+        assertEquals("http://soundcloud.com/niko-nikiosdj/dj-niko-force", track.getPermalinkUrl());
+
+        User user = track.getUser();
+        assertNotNull(user);
+        assertEquals("NIV DJ [official]", user.getUsername());
+        assertEquals("https://i1.sndcdn.com/avatars-000045447140-w7r3d2-large.jpg?cc07a88", user.getAvatarUrl());
+        assertEquals("https://api.soundcloud.com/users/18402377" , user.getUri());
     }
 
     private static String readTestDataFile(String _filename) {
