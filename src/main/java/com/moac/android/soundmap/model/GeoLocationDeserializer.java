@@ -15,11 +15,10 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
     // Format is: "someword "two words" geo:lat=52.527544 geo:lon=22.527432 "more words"
     public GeoLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
-        double lat, lon;
 
         Scanner scanner = new Scanner(json.getAsString());
-        lat = parseGeoTag(scanner.findInLine("geo:lat=(\\d+)\\.(\\d+)"));
-        lon = parseGeoTag(scanner.findInLine("geo:lon=(\\d+)\\.(\\d+)"));
+        double lat = parseGeoTag(scanner.findInLine("geo:lat=(\\d+)\\.(\\d+)"));
+        double lon = parseGeoTag(scanner.findInLine("geo:lon=(\\d+)\\.(\\d+)"));
 
         if(lat == UNSET || lon == UNSET)
             return null;
@@ -32,12 +31,12 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
         if(rawTag == null)
             return UNSET;
 
-        String[] parts = rawTag.split("=", 2);
-        if(parts.length != 2)
+        String[] tokens = rawTag.split("=", 2);
+        if(tokens.length != 2)
             return UNSET;
 
         try {
-            return Double.valueOf(parts[1]);
+            return Double.valueOf(tokens[1]);
         } catch(NumberFormatException nfe) {
             return UNSET;
         }

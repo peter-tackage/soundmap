@@ -78,8 +78,8 @@ public class ModelDeserializationTest {
         assertNotNull(track);
         GeoLocation location = track.getGeoLocation();
         assertNotNull(location);
-        assertEquals(52.527544, location.getGeoLat(), 0.0);
-        assertEquals(13.402905, location.getGeoLong(), 0.0);
+        assertEquals(52.527544, location.getLatitude(), 0.0);
+        assertEquals(13.402905, location.getLongitude(), 0.0);
     }
 
     private static String readTestDataFile(String _filename) {
