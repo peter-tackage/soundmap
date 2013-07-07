@@ -5,22 +5,27 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.SearchView;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.moac.android.soundmap.R;
 import com.moac.android.soundmap.SoundMapApplication;
+import com.moac.android.soundmap.api.ApiRequest;
+import com.moac.android.soundmap.api.TracksEndPoint;
+import com.moac.android.soundmap.model.Track;
 
 public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +33,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Get reference to MapFragment
-        MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map_fragment);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.setRetainInstance(true);
         mMap = mapFragment.getMap();
 
@@ -48,7 +53,7 @@ public class MainActivity extends Activity {
     }
 
     private void handleIntent(Intent _intent) {
-        if (Intent.ACTION_SEARCH.equals(_intent.getAction())) {
+        if(Intent.ACTION_SEARCH.equals(_intent.getAction())) {
             String query = _intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
         }
@@ -70,8 +75,7 @@ public class MainActivity extends Activity {
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
-
-        // I don't register callbacks to invoke the search query - instead use the Intents.
+        // Note: I don't register callbacks to invoke the search query - instead use the Intents.
 
         return true;
     }
@@ -84,8 +88,13 @@ public class MainActivity extends Activity {
         // Build Tracks list
         // Take Geo from Tracks list
         // Feed to Maps Fragment
-       // SoundMapApplication.getApiWrapper().clie
-
+        ApiRequest<Track> request = TracksEndPoint.getTracks(_query);
+        SoundMapApplication.getApiClient().execute(request, new TracksResponseListener(), new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.i(TAG, "onErrorResponse() - " + volleyError.getMessage());
+            }
+        });
     }
 
     private void addTestMarkers() {
@@ -96,4 +105,10 @@ public class MainActivity extends Activity {
         }
     }
 
+    private class TracksResponseListener implements Response.Listener<Track> {
+        @Override
+        public void onResponse(Track tracks) {
+            Log.i(TAG, "onResponse(): got track: " + tracks.getTitle());
+        }
+    }
 }

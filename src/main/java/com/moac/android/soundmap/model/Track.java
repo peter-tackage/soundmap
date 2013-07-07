@@ -21,7 +21,6 @@ public class Track {
      * JSON field name anyway, even at the cost of an annotation dependency and reduced
      * deserialisation flexibility (by hardcoding the fields you lose the ability to
      * configure the deserialisation policy of the GSON instance .. or do you?)
-     *
      */
 
     @SerializedName("id") protected String mId;
@@ -33,10 +32,16 @@ public class Track {
     @SerializedName("tag_list") protected GeoLocation mGeoLocation;
 
     public String getId() { return mId; }
+
     public String getTitle() { return mTitle; }
+
     public User getUser() { return mUser; }
+
     public String getArtworkUrl() { return mArtworkUrl; }
+
     public String getWaveformUrl() { return mWaveformUrl; }
+
     public String getPermalinkUrl() { return mPermalinkUrl; }
+
     public GeoLocation getGeoLocation() { return mGeoLocation;}
 }

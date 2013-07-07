@@ -11,6 +11,7 @@ public class GeoLocation {
     protected double mLong;
 
     public double getLatitude() { return mLat; }
+
     public double getLongitude() { return mLong; }
 
     /**

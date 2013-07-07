@@ -9,7 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -24,7 +27,7 @@ public class ModelDeserializationTest {
      * doesn't have the double quotes escaped! Keep that in mind when
      * copying test data from it - you may be better off getting it from the
      * API directly.
-     * */
+     */
 
     Gson gson;
 
@@ -32,7 +35,7 @@ public class ModelDeserializationTest {
     public void setup() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(GeoLocation.class, new GeoLocationDeserializer());
-          gson = gsonBuilder.create();
+        gson = gsonBuilder.create();
     }
 
     @After
@@ -43,7 +46,7 @@ public class ModelDeserializationTest {
     @Test
     public void testTracksJsonDeserialisation() throws IOException {
         String json = readTestDataFile("tracks.json");
-        Type collectionType = new TypeToken<Collection<Track>>(){}.getType();
+        Type collectionType = new TypeToken<Collection<Track>>() {}.getType();
         Collection<Track> tracks = gson.fromJson(json, collectionType);
         assertNotNull(tracks);
         assertEquals(4, tracks.size());
@@ -52,7 +55,7 @@ public class ModelDeserializationTest {
     @Test
     public void testTrackSingleJsonDeserialisation() throws IOException {
         String json = readTestDataFile("track_single.json");
-        Type trackType = new TypeToken<Track>(){}.getType();
+        Type trackType = new TypeToken<Track>() {}.getType();
 
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
@@ -67,13 +70,13 @@ public class ModelDeserializationTest {
         assertEquals("18402377", user.getId());
         assertEquals("NIV DJ [official]", user.getUsername());
         assertEquals("https://i1.sndcdn.com/avatars-000045447140-w7r3d2-large.jpg?cc07a88", user.getAvatarUrl());
-        assertEquals("https://api.soundcloud.com/users/18402377" , user.getUri());
+        assertEquals("https://api.soundcloud.com/users/18402377", user.getUri());
     }
 
     @Test
     public void testTrackSingleGeoJsonDeserialisation() throws IOException {
         String json = readTestDataFile("track_single_geo.json");
-        Type trackType = new TypeToken<Track>(){}.getType();
+        Type trackType = new TypeToken<Track>() {}.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
         GeoLocation location = track.getGeoLocation();

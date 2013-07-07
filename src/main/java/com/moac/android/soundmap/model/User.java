@@ -12,9 +12,14 @@ public class User {
     @SerializedName("city") protected String mCity;
 
     public String getId() { return mId; }
+
     public String getUsername() { return mUsername; }
+
     public String getAvatarUrl() { return mAvatarUrl; }
+
     public String getUri() { return mUri; }
+
     public String getCountry() { return mCountry; }
+
     public String getCity() { return mCity;}
 }
