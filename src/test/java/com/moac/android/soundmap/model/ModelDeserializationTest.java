@@ -85,6 +85,42 @@ public class ModelDeserializationTest {
         assertEquals(13.402905, location.getLongitude(), 0.0);
     }
 
+    @Test
+    public void testTrackSingleGeoQuotedJsonDeserialisation() throws IOException {
+        String json = readTestDataFile("track_single_geo_quoted.json");
+        Type trackType = new TypeToken<Track>() {}.getType();
+        Track track = gson.fromJson(json, trackType);
+        assertNotNull(track);
+        GeoLocation location = track.getGeoLocation();
+        assertNotNull(location);
+        assertEquals(52.527544, location.getLatitude(), 0.0);
+        assertEquals(13.402905, location.getLongitude(), 0.0);
+    }
+
+    @Test
+    public void testTrackSingleGeoNegativeJsonDeserialisation() throws IOException {
+        String json = readTestDataFile("track_single_geo_negative.json");
+        Type trackType = new TypeToken<Track>() {}.getType();
+        Track track = gson.fromJson(json, trackType);
+        assertNotNull(track);
+        GeoLocation location = track.getGeoLocation();
+        assertNotNull(location);
+        assertEquals(-52.527544, location.getLatitude(), 0.0);
+        assertEquals(-13.402905, location.getLongitude(), 0.0);
+    }
+
+    @Test
+    public void testTrackSingleGeoPositiveJsonDeserialisation() throws IOException {
+        String json = readTestDataFile("track_single_geo_positive.json");
+        Type trackType = new TypeToken<Track>() {}.getType();
+        Track track = gson.fromJson(json, trackType);
+        assertNotNull(track);
+        GeoLocation location = track.getGeoLocation();
+        assertNotNull(location);
+        assertEquals(52.527544, location.getLatitude(), 0.0);
+        assertEquals(13.402905, location.getLongitude(), 0.0);
+    }
+
     private static String readTestDataFile(String _filename) {
         InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(_filename);
 
