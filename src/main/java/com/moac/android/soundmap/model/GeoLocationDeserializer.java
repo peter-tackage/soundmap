@@ -26,11 +26,11 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
         try {
             System.out.println("Input: " + json.getAsString());
             double lat = parseGeoTag(scannerLat.findInLine("geo:lat=[+\\-]?(\\d+)\\.(\\d+)"));
+            if(lat == UNSET) return null;
             double lon = parseGeoTag(scannerLon.findInLine("geo:lon=[+\\-]?(\\d+)\\.(\\d+)"));
-            System.out.println("Got: " + lat + "," + lon);
+            if(lon == UNSET) return null;
 
-            if(lat == UNSET || lon == UNSET)
-                return null;
+            System.out.println("Got: " + lat + "," + lon);
 
             return new GeoLocation(lat, lon);
         } finally {
