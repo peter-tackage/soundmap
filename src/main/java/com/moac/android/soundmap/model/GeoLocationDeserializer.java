@@ -1,6 +1,5 @@
 package com.moac.android.soundmap.model;
 
-import android.util.Log;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -17,17 +16,27 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
     // Format is: "someword "two words" geo:lat=52.527544 geo:lon=-22.527432 "more words"
     public GeoLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
+        // FIXME Shouldn't have to use two scanners.
+        // The issue with using one is that calls to findInLine move the
+        // start of the next findInLine call to the end of the last find.
+        // This causes it to break when the lat/lon appear in different
+        // orders in the String.
+        Scanner scannerLat = new Scanner(json.getAsString());
+        Scanner scannerLon = new Scanner(json.getAsString());
+        try {
+            System.out.println("Input: " + json.getAsString());
+            double lat = parseGeoTag(scannerLat.findInLine("geo:lat=[+\\-]?(\\d+)\\.(\\d+)"));
+            double lon = parseGeoTag(scannerLon.findInLine("geo:lon=[+\\-]?(\\d+)\\.(\\d+)"));
+            System.out.println("Got: " + lat + "," + lon);
 
-    //    System.out.println("Input: " + json.getAsString());
-        Scanner scanner = new Scanner(json.getAsString());
-        double lat = parseGeoTag(scanner.findInLine("geo:lat=[+\\-]?(\\d+)\\.(\\d+)"));
-        double lon = parseGeoTag(scanner.findInLine("geo:lon=[+\\-]?(\\d+)\\.(\\d+)"));
+            if(lat == UNSET || lon == UNSET)
+                return null;
 
-     //   System.out.println("Got: " + lat + "," + lon);
-        if(lat == UNSET || lon == UNSET)
-            return null;
-
-        return new GeoLocation(lat, lon);
+            return new GeoLocation(lat, lon);
+        } finally {
+            scannerLat.close();
+            scannerLon.close();
+        }
     }
 
     // Extract the number from String like "geo:lat=52.527544"
