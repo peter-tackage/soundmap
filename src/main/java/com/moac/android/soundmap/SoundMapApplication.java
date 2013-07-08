@@ -2,6 +2,7 @@ package com.moac.android.soundmap;
 
 import android.app.Application;
 import android.util.Log;
+import com.android.volley.RequestQueue;
 import com.moac.android.soundmap.api.ApiClient;
 
 import java.io.IOException;
@@ -12,16 +13,23 @@ public class SoundMapApplication extends Application {
 
     private static final String TAG = SoundMapApplication.class.getSimpleName();
 
+    private static SimpleVolley sVolley;
     private static ApiClient sApiClient;
 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() - start");
         super.onCreate();
-        sApiClient = initApiClient();
+        sVolley = initVolley();
+        sApiClient = initApiClient(sVolley.getRequestQueue());
     }
 
-    private ApiClient initApiClient() {
+    private SimpleVolley initVolley() {
+        SimpleVolley volley = new SimpleVolley(getApplicationContext());
+        return volley;
+    }
+
+    private ApiClient initApiClient(RequestQueue _requestQueue) {
         Log.i(TAG, "initApiWrapper() - start");
 
         InputStream inputStream = null;
@@ -36,18 +44,17 @@ public class SoundMapApplication extends Application {
             String clientSecret = properties.getProperty("client.secret");
             Log.i(TAG, "initApiWrapper() - creating with clientId: " + clientId + " clientSecret: " + clientSecret);
 
-            return new ApiClient(getApplicationContext(), apiScheme, apiDomain, clientId);
+            return new ApiClient(_requestQueue, apiScheme, apiDomain, clientId);
         } catch(IOException e) {
-            Log.e(TAG, "Failed to initialise SoundCloud API Wrapper", e);
-            throw new RuntimeException("Unable to initialise SoundCloud API Wrapper");
+            Log.e(TAG, "Failed to initialise API Client", e);
+            throw new RuntimeException("Unable to initialise API Client");
         } finally {
             safeClose(inputStream);
         }
     }
 
-    public static ApiClient getApiClient() {
-        return sApiClient;
-    }
+    public static ApiClient getApiClient() { return sApiClient; }
+    public static SimpleVolley getVolley() { return sVolley; }
 
     private void safeClose(InputStream _stream) {
         if(_stream != null) {

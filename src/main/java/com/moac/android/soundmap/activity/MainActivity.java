@@ -14,9 +14,11 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.moac.android.soundmap.R;
 import com.moac.android.soundmap.SoundMapApplication;
+import com.moac.android.soundmap.adapter.InfoAdapter;
 import com.moac.android.soundmap.api.ApiRequest;
 import com.moac.android.soundmap.api.TracksEndPoint;
 import com.moac.android.soundmap.model.GeoLocation;
@@ -28,6 +30,7 @@ public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
+    private InfoAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class MainActivity extends Activity {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.setRetainInstance(true);
         mMap = mapFragment.getMap();
+        mAdapter = new InfoAdapter(getLayoutInflater(), SoundMapApplication.getVolley().getImageLoader());
+        mMap.setInfoWindowAdapter(mAdapter);
 
         // We are using single top mode, so this will not contain
         // search intents as the SearchView is operating on its host
@@ -102,16 +107,22 @@ public class MainActivity extends Activity {
         @Override
         public void onResponse(Collection<Track> tracks) {
             Log.i(TAG, "onResponse(): got tracks: " + tracks.size());
-            mMap.clear();
+            clear();
             for(Track track : tracks) {
                 Log.v(TAG, "onResponse() - GEO IS: " + track.getGeoLocation());
                 GeoLocation loc = track.getGeoLocation();
                 if(loc != null) {
-                    mMap.addMarker(new MarkerOptions()
-                      .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                      .position(new LatLng(loc.getLatitude(), loc.getLongitude())).snippet(track.getUser().getUsername())
                       .title(track.getTitle()));
+                    mAdapter.addMarker(marker, track);
                 }
             }
         }
+    }
+
+    private void clear() {
+        mAdapter.clear();
+        mMap.clear();
     }
 }

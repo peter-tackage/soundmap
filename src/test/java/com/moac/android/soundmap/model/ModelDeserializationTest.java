@@ -133,6 +133,14 @@ public class ModelDeserializationTest {
         assertEquals(13.402905, location.getLongitude(), 0.0);
     }
 
+    /**
+     * FIXME Test the GeoLocation deserialization more directly.
+     * Use only the required data rather than a whole track.
+     * Using a full JSON Track makes it difficult to see what
+     * the variance in the input data is and forces me to get an
+     * entire Track dump just to test a single component.
+     */
+
     private static String readTestDataFile(String _filename) {
         InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(_filename);
 

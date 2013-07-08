@@ -32,16 +32,10 @@ public class Track {
     @SerializedName("tag_list") protected GeoLocation mGeoLocation;
 
     public String getId() { return mId; }
-
     public String getTitle() { return mTitle; }
-
     public User getUser() { return mUser; }
-
     public String getArtworkUrl() { return mArtworkUrl; }
-
     public String getWaveformUrl() { return mWaveformUrl; }
-
     public String getPermalinkUrl() { return mPermalinkUrl; }
-
     public GeoLocation getGeoLocation() { return mGeoLocation;}
 }

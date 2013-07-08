@@ -22,12 +22,12 @@ public class ApiClient {
     private Gson mGson;
     private RequestQueue mQueue;
 
-    public ApiClient(Context _context, String _hostScheme, String _hostDomain, String _clientId) {
+    public ApiClient(RequestQueue _requestQueue, String _hostScheme, String _hostDomain, String _clientId) {
         HOST_SCHEME = _hostScheme;
         HOST_DOMAIN = _hostDomain;
         CLIENT_ID = _clientId;
         mGson = new GsonBuilder().registerTypeAdapter(GeoLocation.class, new GeoLocationDeserializer()).create();
-        mQueue = Volley.newRequestQueue(_context);
+        mQueue = _requestQueue;
     }
 
     public <T> void execute(ApiRequest<T> _request, Response.Listener<T> _okListener, Response.ErrorListener _errorListener) {
