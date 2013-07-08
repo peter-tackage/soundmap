@@ -13,6 +13,7 @@ import com.moac.android.soundmap.model.GeoLocationDeserializer;
 public class ApiClient {
 
     private static final String TAG = ApiClient.class.getSimpleName();
+    public static final String CLIENT_ID_PARAM = "client_id";
 
     private final String HOST_DOMAIN;
     private final String HOST_SCHEME;
@@ -30,8 +31,8 @@ public class ApiClient {
     }
 
     public <T> void execute(ApiRequest<T> _request, Response.Listener<T> _okListener, Response.ErrorListener _errorListener) {
-        if(!_request.getQueries().containsKey(EndPoints.CLIENT_ID_PARAM)) {
-            _request.withQuery(EndPoints.CLIENT_ID_PARAM, CLIENT_ID);
+        if(!_request.getQueries().containsKey(CLIENT_ID_PARAM)) {
+            _request.withQuery(CLIENT_ID_PARAM, CLIENT_ID);
         }
 
         final String url = HOST_SCHEME + HOST_DOMAIN + _request.toUrl();
