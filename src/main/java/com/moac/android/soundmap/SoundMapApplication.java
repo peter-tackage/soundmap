@@ -24,9 +24,11 @@ public class SoundMapApplication extends Application {
         sApiClient = initApiClient(sVolley.getRequestQueue());
     }
 
+    public static ApiClient getApiClient() { return sApiClient; }
+    public static SimpleVolley getVolley() { return sVolley; }
+
     private SimpleVolley initVolley() {
-        SimpleVolley volley = new SimpleVolley(getApplicationContext());
-        return volley;
+        return new SimpleVolley(getApplicationContext());
     }
 
     private ApiClient initApiClient(RequestQueue _requestQueue) {
@@ -52,9 +54,6 @@ public class SoundMapApplication extends Application {
             safeClose(inputStream);
         }
     }
-
-    public static ApiClient getApiClient() { return sApiClient; }
-    public static SimpleVolley getVolley() { return sVolley; }
 
     private void safeClose(InputStream _stream) {
         if(_stream != null) {

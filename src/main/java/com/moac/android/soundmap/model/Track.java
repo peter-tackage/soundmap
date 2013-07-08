@@ -1,5 +1,6 @@
 package com.moac.android.soundmap.model;
 
+import android.graphics.Bitmap;
 import com.google.gson.annotations.SerializedName;
 
 public class Track {
@@ -31,6 +32,17 @@ public class Track {
     @SerializedName("permalink_url") protected String mPermalinkUrl;
     @SerializedName("tag_list") protected GeoLocation mGeoLocation;
 
+    /**
+     * I would much rather we didn't store the Bitmap here as the naive implementation
+     * that we have places a much heavy resource strain on the Track. Meaning that
+     * the number of Tracks we can display is much more limited than if we just
+     * loaded the image URL into the ImageView as needed.
+     *
+     * Currently,once a Bitmap is loaded into the Track is it not released
+     * until the map is cleared of that Marker.
+     */
+    private Bitmap mAvatar;
+
     public String getId() { return mId; }
     public String getTitle() { return mTitle; }
     public User getUser() { return mUser; }
@@ -38,4 +50,7 @@ public class Track {
     public String getWaveformUrl() { return mWaveformUrl; }
     public String getPermalinkUrl() { return mPermalinkUrl; }
     public GeoLocation getGeoLocation() { return mGeoLocation;}
+
+    public Bitmap getAvatar() {return mAvatar; }
+    public void setAvatar(Bitmap avatar) { mAvatar = avatar; }
 }

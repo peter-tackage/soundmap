@@ -11,6 +11,9 @@ import android.view.MenuInflater;
 import android.widget.SearchView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,16 +24,20 @@ import com.moac.android.soundmap.SoundMapApplication;
 import com.moac.android.soundmap.adapter.InfoAdapter;
 import com.moac.android.soundmap.api.ApiRequest;
 import com.moac.android.soundmap.api.TracksEndPoint;
+import com.moac.android.soundmap.fragment.MarkerFragment;
 import com.moac.android.soundmap.model.GeoLocation;
 import com.moac.android.soundmap.model.Track;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
     private InfoAdapter mAdapter;
+    private Map<Marker, Track> mMarkerMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +49,58 @@ public class MainActivity extends Activity {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.setRetainInstance(true);
         mMap = mapFragment.getMap();
-        mAdapter = new InfoAdapter(getLayoutInflater(), SoundMapApplication.getVolley().getImageLoader());
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // I can't believe I have to do all this myself now...
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                loadImage(marker);
+                marker.showInfoWindow();
+                return true;
+            }
+        });
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        mMarkerMap = new HashMap<Marker, Track>();
+        mAdapter = new InfoAdapter(getLayoutInflater(), mMarkerMap);
         mMap.setInfoWindowAdapter(mAdapter);
 
         // We are using single top mode, so this will not contain
         // search intents as the SearchView is operating on its host
         // Activity - instead see onNewIntent()
         handleIntent(getIntent());
+    }
+
+    private boolean loadImage(final Marker marker) {
+        Log.i(TAG, "loadImage() started: " + marker.getId());
+
+        final Track track = mMarkerMap.get(marker);
+        if(track == null)
+            return false;
+
+        String url = track.getArtworkUrl();
+        if(url == null)
+            return false;
+        SoundMapApplication.getVolley().getImageLoader().get(url, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                Log.i(TAG, "onResponse() image loaded");
+                track.setAvatar(imageContainer.getBitmap());
+                if(marker.isInfoWindowShown())
+                    marker.showInfoWindow();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.i(TAG, "onResponse() image failed to load");
+                // FIXME Show placeholder?
+            }
+        });
+        return true;
     }
 
     @Override
@@ -118,6 +170,7 @@ public class MainActivity extends Activity {
                     Marker marker = mMap.addMarker(new MarkerOptions()
                       .position(new LatLng(loc.getLatitude(), loc.getLongitude())).snippet(track.getUser().getUsername())
                       .title(track.getTitle()));
+                    mMarkerMap.put(marker, track);
                 }
             }
         }
@@ -125,5 +178,6 @@ public class MainActivity extends Activity {
 
     private void clear() {
         mMap.clear();
+        mMarkerMap.clear();
     }
 }
