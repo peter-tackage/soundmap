@@ -4,17 +4,24 @@
   android:orientation="vertical" android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <com.android.volley.toolbox.NetworkImageView
+  <ImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/track_imageview"
-    android:layout_gravity="left|center_vertical" />
+    android:id="@+id/track_imageview" />
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="New Text"
+    android:text="User"
+    android:id="@+id/username_textview"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textColor="@android:color/darker_gray"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Longer Track Name Text"
     android:id="@+id/track_title_textview"
-    android:layout_gravity="left|center_vertical" />
+    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

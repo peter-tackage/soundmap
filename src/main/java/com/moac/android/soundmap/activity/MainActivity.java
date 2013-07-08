@@ -103,6 +103,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Generates Map Marker model objects from API derived Track objects.
+     */
     private class TracksResponseListener implements Response.Listener<Collection<Track>> {
         @Override
         public void onResponse(Collection<Track> tracks) {
@@ -115,14 +118,12 @@ public class MainActivity extends Activity {
                     Marker marker = mMap.addMarker(new MarkerOptions()
                       .position(new LatLng(loc.getLatitude(), loc.getLongitude())).snippet(track.getUser().getUsername())
                       .title(track.getTitle()));
-                    mAdapter.addMarker(marker, track);
                 }
             }
         }
     }
 
     private void clear() {
-        mAdapter.clear();
         mMap.clear();
     }
 }

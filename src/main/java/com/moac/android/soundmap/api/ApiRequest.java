@@ -32,12 +32,8 @@ public class ApiRequest<T> {
     }
 
     public String getEndpoint() { return mEndpoint; }
-
     public Map<String, String> getQueries() { return mQueries; }
-
-    public TypeToken<T> getTargetType() {
-        return mTargetType;
-    }
+    public TypeToken<T> getTargetType() { return mTargetType; }
 
     public String toUrl() {
         return toUrl(UTF_8);
