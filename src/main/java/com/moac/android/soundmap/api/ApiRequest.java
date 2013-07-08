@@ -1,5 +1,7 @@
 package com.moac.android.soundmap.api;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -10,12 +12,12 @@ public class ApiRequest<T> {
     private static final String UTF_8 = "UTF-8";
     private static final String FORMAT = ".json";
 
-    private final Class<T> mClass;
+    private final TypeToken<T> mTargetType;
     private final String mEndpoint;
     private Map<String, String> mQueries = new HashMap<String, String>();
 
-    public ApiRequest(Class<T> clazz, String _endpoint) {
-        mClass = clazz;
+    public ApiRequest(TypeToken<T> type, String _endpoint) {
+        mTargetType = type;
         mEndpoint = _endpoint;
     }
 
@@ -33,7 +35,9 @@ public class ApiRequest<T> {
 
     public Map<String, String> getQueries() { return mQueries; }
 
-    public Class<T> getTargetClass() { return mClass; }
+    public TypeToken<T> getTargetType() {
+        return mTargetType;
+    }
 
     public String toUrl() {
         return toUrl(UTF_8);

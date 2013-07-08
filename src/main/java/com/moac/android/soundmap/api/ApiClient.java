@@ -36,7 +36,7 @@ public class ApiClient {
 
         final String url = HOST_SCHEME + HOST_DOMAIN + _request.toUrl();
         Log.i(TAG, "execute() - url: " + url);
-        GsonRequest request = new GsonRequest<T>(mGson, url, _request.getTargetClass(), _okListener, _errorListener);
+        GsonRequest request = new GsonRequest<T>(mGson, url, _request.getTargetType(), _okListener, _errorListener);
         mQueue.add(request);
     }
 }

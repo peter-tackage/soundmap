@@ -19,7 +19,10 @@ import com.moac.android.soundmap.R;
 import com.moac.android.soundmap.SoundMapApplication;
 import com.moac.android.soundmap.api.ApiRequest;
 import com.moac.android.soundmap.api.TracksEndPoint;
+import com.moac.android.soundmap.model.GeoLocation;
 import com.moac.android.soundmap.model.Track;
+
+import java.util.Collection;
 
 public class MainActivity extends Activity {
 
@@ -36,8 +39,6 @@ public class MainActivity extends Activity {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.setRetainInstance(true);
         mMap = mapFragment.getMap();
-
-        addTestMarkers();
 
         // We are using single top mode, so this will not contain
         // search intents as the SearchView is operating on its host
@@ -88,27 +89,29 @@ public class MainActivity extends Activity {
         // Build Tracks list
         // Take Geo from Tracks list
         // Feed to Maps Fragment
-        ApiRequest<Track> request = TracksEndPoint.getTracks(_query);
+        ApiRequest<Collection<Track>> request = TracksEndPoint.getGeoTracks(_query);
         SoundMapApplication.getApiClient().execute(request, new TracksResponseListener(), new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.i(TAG, "onErrorResponse() - " + volleyError.getMessage());
+                Log.w(TAG, "onErrorResponse() - " + volleyError.getMessage());
             }
         });
     }
 
-    private void addTestMarkers() {
-        if(mMap != null) {
-            mMap.addMarker(new MarkerOptions()
-              .position(new LatLng(0, 0))
-              .title("Hello world"));
-        }
-    }
-
-    private class TracksResponseListener implements Response.Listener<Track> {
+    private class TracksResponseListener implements Response.Listener<Collection<Track>> {
         @Override
-        public void onResponse(Track tracks) {
-            Log.i(TAG, "onResponse(): got track: " + tracks.getTitle());
+        public void onResponse(Collection<Track> tracks) {
+            Log.i(TAG, "onResponse(): got tracks: " + tracks.size());
+            mMap.clear();
+            for(Track track : tracks) {
+                Log.v(TAG, "onResponse() - GEO IS: " + track.getGeoLocation());
+                GeoLocation loc = track.getGeoLocation();
+                if(loc != null) {
+                    mMap.addMarker(new MarkerOptions()
+                      .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                      .title(track.getTitle()));
+                }
+            }
         }
     }
 }

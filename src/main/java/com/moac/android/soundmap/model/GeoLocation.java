@@ -14,7 +14,8 @@ public class GeoLocation {
 
     public double getLongitude() { return mLong; }
 
-    /**
-     * Populate from the tags: "/tracks?tags=geo:"
-     */
+    @Override
+    public String toString() {
+        return mLat + "," + mLong;
+    }
 }
