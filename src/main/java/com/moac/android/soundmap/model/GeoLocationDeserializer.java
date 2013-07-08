@@ -24,14 +24,10 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
         Scanner scannerLat = new Scanner(json.getAsString());
         Scanner scannerLon = new Scanner(json.getAsString());
         try {
-            System.out.println("Input: " + json.getAsString());
             double lat = parseGeoTag(scannerLat.findInLine("geo:lat=[+\\-]?(\\d+)\\.(\\d+)"));
             if(lat == UNSET) return null;
             double lon = parseGeoTag(scannerLon.findInLine("geo:lon=[+\\-]?(\\d+)\\.(\\d+)"));
             if(lon == UNSET) return null;
-
-            System.out.println("Got: " + lat + "," + lon);
-
             return new GeoLocation(lat, lon);
         } finally {
             scannerLat.close();
@@ -41,7 +37,6 @@ public class GeoLocationDeserializer implements JsonDeserializer<GeoLocation> {
 
     // Extract the number from String like "geo:lat=52.527544"
     private static double parseGeoTag(String rawTag) {
-        System.out.println(" raw: " + rawTag);
         if(rawTag == null)
             return UNSET;
 

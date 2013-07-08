@@ -18,11 +18,12 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
 
     private static final String TAG = InfoAdapter.class.getSimpleName();
 
-    private final LayoutInflater mInflator;
-    private Map<Marker, Track> mMarkerMap;
-    public InfoAdapter(LayoutInflater _inflator, Map<Marker, Track> markerMap) {
-      mInflator = _inflator;
-      mMarkerMap = markerMap;
+    private final LayoutInflater mInflater;
+    private final Map<Marker, Track> mMarkerMap;
+
+    public InfoAdapter(LayoutInflater inflater, Map<Marker, Track> markerMap) {
+        mInflater = inflater;
+        mMarkerMap = markerMap;
     }
 
     @Override
@@ -30,15 +31,14 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
         return null; // default Window
     }
 
-
     @Override
     public View getInfoContents(final Marker marker) {
         Log.i(TAG, "getInfoContents() started: " + marker.getId());
-        final View popup = mInflator.inflate(R.layout.popup_view, null);
+        final View popup = mInflater.inflate(R.layout.popup_view, null);
 
-        ImageView imageView = (ImageView)popup.findViewById(R.id.track_imageview);
-        TextView titleTextView = (TextView)popup.findViewById(R.id.track_title_textview);
-        TextView userTextView = (TextView)popup.findViewById(R.id.username_textview);
+        ImageView imageView = (ImageView) popup.findViewById(R.id.track_imageview);
+        TextView titleTextView = (TextView) popup.findViewById(R.id.track_title_textview);
+        TextView userTextView = (TextView) popup.findViewById(R.id.username_textview);
 
         titleTextView.setText(marker.getTitle());
         userTextView.setText(marker.getSnippet());
@@ -47,7 +47,7 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
         if(bmp != null) {
             imageView.setImageBitmap(bmp);
         } else {
-            Drawable myIcon = mInflator.getContext().getResources().getDrawable( R.drawable.ic_soundcloud );
+            Drawable myIcon = mInflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
             imageView.setImageDrawable(myIcon);
         }
 
@@ -60,5 +60,4 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
 
         return popup;
     }
-
 }
