@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string-array name="draw_entry_list_array">
-      <item>Home</item>
-      <item>Feed</item>
-  </string-array>
-</resources>
