@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -93,16 +94,13 @@ public class TrackMapFragment extends MapFragment implements GoogleMap.OnMarkerC
     }
 
     public void doSearch(String _query) {
-        // Take query string
-        // Run query on SoundCloud API
-        // Build Tracks list
-        // Take Geo from Tracks list
-        // Feed to Maps Fragment
+        clear();
         ApiRequest<Collection<Track>> request = TracksEndPoint.getGeoTracks(_query);
         SoundMapApplication.getApiClient().execute(request, new TracksResponseListener(), new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.w(TAG, "onErrorResponse() - " + volleyError.getMessage());
+                Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -125,6 +123,8 @@ public class TrackMapFragment extends MapFragment implements GoogleMap.OnMarkerC
                     mMarkerMap.put(marker, track);
                 }
             }
+            String msg = String.format("Found %d sounds", mMarkerMap.size());
+            Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
         }
     }
 

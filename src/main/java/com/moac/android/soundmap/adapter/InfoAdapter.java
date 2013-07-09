@@ -42,6 +42,7 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
 
         titleTextView.setText(marker.getTitle());
         userTextView.setText(marker.getSnippet());
+
         Track track = mMarkerMap.get(marker);
         Bitmap bmp = track.getAvatar();
         if(bmp != null) {
