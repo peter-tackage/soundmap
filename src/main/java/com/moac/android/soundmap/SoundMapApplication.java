@@ -3,7 +3,11 @@ package com.moac.android.soundmap;
 import android.app.Application;
 import android.util.Log;
 import com.android.volley.RequestQueue;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.moac.android.soundmap.api.ApiClient;
+import com.moac.android.soundmap.model.GeoLocation;
+import com.moac.android.soundmap.model.GeoLocationDeserializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +19,14 @@ public class SoundMapApplication extends Application {
 
     private static SimpleVolley sVolley;
     private static ApiClient sApiClient;
+    private static Gson sGson =  new GsonBuilder().registerTypeAdapter(GeoLocation.class, new GeoLocationDeserializer()).create();
 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() - start");
         super.onCreate();
         sVolley = initVolley();
-        sApiClient = initApiClient(sVolley.getRequestQueue());
+        sApiClient = initApiClient(sVolley.getRequestQueue(), sGson);
     }
 
     public static ApiClient getApiClient() { return sApiClient; }
@@ -31,7 +36,7 @@ public class SoundMapApplication extends Application {
         return new SimpleVolley(getApplicationContext());
     }
 
-    private ApiClient initApiClient(RequestQueue _requestQueue) {
+    private ApiClient initApiClient(RequestQueue _requestQueue, Gson _gson) {
         Log.i(TAG, "initApiWrapper() - start");
 
         InputStream inputStream = null;
@@ -46,7 +51,7 @@ public class SoundMapApplication extends Application {
             String clientSecret = properties.getProperty("client.secret");
             Log.i(TAG, "initApiWrapper() - creating with clientId: " + clientId + " clientSecret: " + clientSecret);
 
-            return new ApiClient(_requestQueue, apiScheme, apiDomain, clientId);
+            return new ApiClient(_requestQueue, _gson, apiScheme, apiDomain, clientId);
         } catch(IOException e) {
             Log.e(TAG, "Failed to initialise API Client", e);
             throw new RuntimeException("Unable to initialise API Client");

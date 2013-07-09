@@ -1,14 +1,10 @@
 package com.moac.android.soundmap.api;
 
-import android.content.Context;
 import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.moac.android.soundmap.model.GeoLocation;
-import com.moac.android.soundmap.model.GeoLocationDeserializer;
 
 public class ApiClient {
 
@@ -22,12 +18,12 @@ public class ApiClient {
     private Gson mGson;
     private RequestQueue mQueue;
 
-    public ApiClient(RequestQueue _requestQueue, String _hostScheme, String _hostDomain, String _clientId) {
+    public ApiClient(RequestQueue _requestQueue, Gson _gson, String _hostScheme, String _hostDomain, String _clientId) {
+        mQueue = _requestQueue;
+        mGson = _gson;
         HOST_SCHEME = _hostScheme;
         HOST_DOMAIN = _hostDomain;
         CLIENT_ID = _clientId;
-        mGson = new GsonBuilder().registerTypeAdapter(GeoLocation.class, new GeoLocationDeserializer()).create();
-        mQueue = _requestQueue;
     }
 
     public <T> void execute(ApiRequest<T> _request, Response.Listener<T> _okListener, Response.ErrorListener _errorListener) {
