@@ -37,7 +37,7 @@ public class SoundMapApplication extends Application {
     }
 
     private ApiClient initApiClient(RequestQueue _requestQueue, Gson _gson) {
-        Log.i(TAG, "initApiWrapper() - start");
+        Log.i(TAG, "initApiClient() - start");
 
         InputStream inputStream = null;
         try {
@@ -49,7 +49,7 @@ public class SoundMapApplication extends Application {
             String apiDomain = properties.getProperty("host.domain");
             String clientId = properties.getProperty("client.id");
             String clientSecret = properties.getProperty("client.secret");
-            Log.i(TAG, "initApiWrapper() - creating with clientId: " + clientId + " clientSecret: " + clientSecret);
+            Log.i(TAG, "initApiClient() - creating with clientId: " + clientId + " clientSecret: " + clientSecret);
 
             return new ApiClient(_requestQueue, _gson, apiScheme, apiDomain, clientId);
         } catch(IOException e) {
