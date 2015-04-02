@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:soundmap="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/menu_search_label"
+        soundmap:actionViewClass="android.support.v7.widget.SearchView"
+        soundmap:showAsAction="always" />
+</menu>
