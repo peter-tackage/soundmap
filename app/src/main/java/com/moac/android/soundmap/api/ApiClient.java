@@ -34,7 +34,7 @@ public class ApiClient {
 
         final String url = String.format("%s://%s%s", hostScheme, hostDomain, request.toUrl());
         Log.i(TAG, "### execute() ### - url: " + url);
-        GsonRequest apiRequest = new GsonRequest<>(gson, url, request.getTargetType(), okListener, errorListener);
+        GsonRequest<T> apiRequest = new GsonRequest<>(gson, url, request.getTargetType(), okListener, errorListener);
         requestQueue.add(apiRequest);
     }
 }
