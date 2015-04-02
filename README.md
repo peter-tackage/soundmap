@@ -15,4 +15,4 @@ Additionally, it appears that you can't use the SoundCloud API to query for a ke
 
 And it looks a bit like this -
 
- <img src="https://github.com/peter-tackage/assets/raw/master/screenshots/soundmap/screenshot-soundmap.png" alt="Soundmap Screenshot 2" width="300">
+ <img src="https://github.com/peter-tackage/assets/raw/master/screenshots/soundmap/Screenshot_2015-04-02-10-41-45.png" alt="Soundmap Screenshot" width="300">
