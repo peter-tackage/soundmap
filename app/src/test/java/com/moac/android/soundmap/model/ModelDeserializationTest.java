@@ -83,7 +83,7 @@ public class ModelDeserializationTest {
         }.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
-        GeoLocation location = track.getGeoLocation();
+        GeoLocationTag location = track.getGeoLocationTag();
         assertNotNull(location);
         assertEquals(52.527544, location.getLatitude(), 0.0);
         assertEquals(13.402905, location.getLongitude(), 0.0);
@@ -96,7 +96,7 @@ public class ModelDeserializationTest {
         }.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
-        GeoLocation location = track.getGeoLocation();
+        GeoLocationTag location = track.getGeoLocationTag();
         assertNotNull(location);
         assertEquals(52.527544, location.getLatitude(), 0.0);
         assertEquals(13.402905, location.getLongitude(), 0.0);
@@ -109,7 +109,7 @@ public class ModelDeserializationTest {
         }.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
-        GeoLocation location = track.getGeoLocation();
+        GeoLocationTag location = track.getGeoLocationTag();
         assertNotNull(location);
         assertEquals(-52.527544, location.getLatitude(), 0.0);
         assertEquals(-13.402905, location.getLongitude(), 0.0);
@@ -122,7 +122,7 @@ public class ModelDeserializationTest {
         }.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
-        GeoLocation location = track.getGeoLocation();
+        GeoLocationTag location = track.getGeoLocationTag();
         assertNotNull(location);
         assertEquals(52.527544, location.getLatitude(), 0.0);
         assertEquals(13.402905, location.getLongitude(), 0.0);
@@ -135,7 +135,7 @@ public class ModelDeserializationTest {
         }.getType();
         Track track = gson.fromJson(json, trackType);
         assertNotNull(track);
-        GeoLocation location = track.getGeoLocation();
+        GeoLocationTag location = track.getGeoLocationTag();
         assertNotNull(location);
         assertEquals(52.527544, location.getLatitude(), 0.0);
         assertEquals(13.402905, location.getLongitude(), 0.0);
