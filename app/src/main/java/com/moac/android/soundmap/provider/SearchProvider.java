@@ -17,6 +17,7 @@ import rx.functions.Action1;
  */
 public class SearchProvider {
 
+    private static final String SOUND_RESPONSE_OBJECT_FIELDS = "id,url,name,tags,description,geotag,username,images";
     private final FreeSoundApi freeSoundApi;
     private final LruCache<String, SoundListJsonModel> cache;
 
@@ -30,21 +31,25 @@ public class SearchProvider {
         return freeSoundApi.search(query, buildGeoSearchFilter(), buildSearchFields())
                 .doOnNext(new Action1<SoundListJsonModel>() {
                     @Override public void call(SoundListJsonModel soundListJsonModel) {
-                        if (soundListJsonModel != null) {
-                            cache.put(query, soundListJsonModel);
-                        }
+                        cache.put(query, soundListJsonModel);
                     }
                 })
-                .startWith(cache.get(query));
+                .startWith(getCached(query))
+                .onErrorResumeNext(getCached(query));
 
         // TODO Some sort of distinct operator?
     }
 
     private static String buildSearchFields() {
-        return "id,url,name,tags,description,geotag,username,images";
+        return SOUND_RESPONSE_OBJECT_FIELDS;
     }
 
     private static String buildGeoSearchFilter() {
         return String.format(ApiConst.IS_GEO_TAGGED_FILTER_QUERY_PARAM + ":%s", true);
+    }
+
+    private Observable<SoundListJsonModel> getCached(String key) {
+        SoundListJsonModel result = cache.get(key);
+        return result == null ? Observable.<SoundListJsonModel>empty() : Observable.just(result);
     }
 }

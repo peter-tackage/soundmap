@@ -7,7 +7,6 @@ import retrofit.http.Query;
 import rx.Observable;
 
 public interface FreeSoundApi {
-
     @GET("/apiv2/search/text/")
     public Observable<SoundListJsonModel> search(@Query("query") String query,
                                                  @Query("filter") String filter,

@@ -60,7 +60,7 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
         View view = super.onCreateView(inflater, parent, savedInstanceState);
         component = ((MainActivity) getActivity()).component();
         component.inject(this);
-        getMap().setOnMarkerClickListener(this);
+        initMap();
         return view;
     }
 
@@ -133,6 +133,11 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
             String msg = String.format("Found %d sounds", sounds.size());
             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initMap() {
+        getMap().getUiSettings().setZoomControlsEnabled(true);
+        getMap().setOnMarkerClickListener(this);
     }
 
     private void clearMap() {
