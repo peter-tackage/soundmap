@@ -1,27 +1,27 @@
 package com.moac.android.soundmap.viewmodel;
 
-import android.graphics.Bitmap;
+import com.moac.android.soundmap.api.model.SoundImageFormat;
+import com.moac.android.soundmap.api.model.SoundJsonModel;
 
-import com.moac.android.soundmap.model.Track;
+public final class MarkerViewModel {
 
-public class MarkerViewModel {
+    private final SoundJsonModel sound;
+    private final SoundImageFormat displayedImageFormat;
 
-    private final Track track;
-    private Bitmap avatarBitmap;
-
-    public MarkerViewModel(Track track) {
-        this.track = track;
+    public MarkerViewModel(SoundJsonModel sound, SoundImageFormat displayedImageFormat) {
+        this.sound = sound;
+        this.displayedImageFormat = displayedImageFormat;
     }
 
-    public Track getTrack() {
-        return track;
+    public SoundJsonModel getSound() {
+        return sound;
     }
 
-    public Bitmap getAvatarBitmap() {
-        return avatarBitmap;
+    public String getImageUrl() {
+        return sound.getImages().get(displayedImageFormat);
     }
 
-    public void setAvatarBitmap(Bitmap avatarBitmap) {
-        this.avatarBitmap = avatarBitmap;
+    public SoundImageFormat getDisplayedImageFormat() {
+        return displayedImageFormat;
     }
 }

@@ -2,20 +2,24 @@ package com.moac.android.soundmap.model;
 
 public class GeoLocation {
 
-    public GeoLocation(double lat, double lon) {
-        mLat = lat;
-        mLong = lon;
+    private final double latitude;
+    private final double longitude;
+
+    public GeoLocation(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    protected double mLat;
-    protected double mLong;
+    public double getLatitude() {
+        return latitude;
+    }
 
-    public double getLatitude() { return mLat; }
-
-    public double getLongitude() { return mLong; }
+    public double getLongitude() {
+        return longitude;
+    }
 
     @Override
     public String toString() {
-        return mLat + "," + mLong;
+        return latitude + "," + longitude;
     }
 }

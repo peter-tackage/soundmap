@@ -3,6 +3,7 @@ package com.moac.android.soundmap.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.moac.android.soundmap.api.model.GeoLocationDeserializer;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.activity;
+package com.moac.android.soundmap.ui.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -15,24 +15,30 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.moac.android.soundmap.R;
-import com.moac.android.soundmap.fragment.TrackMapFragment;
+import com.moac.android.soundmap.SoundMapApplication;
+import com.moac.android.soundmap.injection.module.ActivityModule;
+import com.moac.android.soundmap.ui.fragment.SoundMapFragment;
 
-public class MainActivity extends ActionBarActivity {
+public final class MainActivity extends ActionBarActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private TrackMapFragment mapFragment;
+    private MainComponent component;
+
+    private SoundMapFragment mapFragment;
     private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        component().inject(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_search);
         setSupportActionBar(toolbar);
 
         // Get reference to MapFragment
-        mapFragment = (TrackMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+        mapFragment = (SoundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
 
         // We are using single top mode, so this will not contain
         // search intents as the SearchView is operating on its host
@@ -45,6 +51,16 @@ public class MainActivity extends ActionBarActivity {
         Log.i(TAG, "onNewIntent - received intent");
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    public MainComponent component() {
+        if (component == null) {
+            component = DaggerMainComponent.builder()
+                    .applicationComponent(((SoundMapApplication) getApplication()).component())
+                    .activityModule(new ActivityModule(this))
+                    .build();
+        }
+        return component;
     }
 
     private void handleIntent(Intent intent) {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,11 +22,13 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
     private static final String TAG = InfoAdapter.class.getSimpleName();
 
     private final LayoutInflater inflater;
-    private final Map<Marker, MarkerViewModel> markerMap;
+    private final Map<String, MarkerViewModel> markerMap;
+    private final LruCache<String, Bitmap> bitmapCache;
 
-    public InfoAdapter(LayoutInflater inflater, Map<Marker, MarkerViewModel> markerMap) {
+    public InfoAdapter(LayoutInflater inflater, Map<String, MarkerViewModel> markerMap, LruCache<String, Bitmap> bitmapCache) {
         this.inflater = inflater;
         this.markerMap = markerMap;
+        this.bitmapCache = bitmapCache;
     }
 
     @Override
@@ -46,22 +49,29 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
         titleTextView.setText(marker.getTitle());
         userTextView.setText(marker.getSnippet());
 
-        MarkerViewModel markerViewModel = markerMap.get(marker);
-        Bitmap bmp = markerViewModel.getAvatarBitmap();
-        if (bmp != null) {
-            imageView.setImageBitmap(bmp);
+        // Find the model associated with this Marker
+        MarkerViewModel markerViewModel = markerMap.get(marker.getId());
+        // Use the Sound's displayed image URL to key the cache
+        String cacheKey = markerViewModel.getImageUrl();
+
+        // Check if the bitmap is still immediately available
+        Bitmap bitmap = bitmapCache.get(cacheKey);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
         } else {
-            // Avatar image not available (temporarily or permanently)
-            Drawable myIcon = inflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
-            imageView.setImageDrawable(myIcon);
+            // Sound image not available (temporarily or permanently) - set placeholder
+            Drawable placeholderDrawable = inflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
+            imageView.setImageDrawable(placeholderDrawable);
         }
 
         // Note: It is impossible to asynchronously load the image into the
         // the ImageView here. The contents of the returned view is rendered as an
         // image once it is returned from this call.
 
-        // Cache hits are actually successfully rendered here as the async/network
-        // call is never actually made, hence the image contents are ready.
+        // Picasso cache hits via Picasso's get() would actually successfully rendered here as the
+        // async/network call is never actually made, hence the image contents are ready.
+        // However, we can't rely on this as if the image is not cached then a potentially long
+        // blocking operation will occur.
 
         return popup;
     }

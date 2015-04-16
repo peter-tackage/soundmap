@@ -1,79 +1,32 @@
 package com.moac.android.soundmap;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.moac.android.soundmap.api.ApiClient;
-import com.moac.android.soundmap.model.GeoLocationDeserializer;
-import com.moac.android.soundmap.model.GeoLocationTag;
-import com.moac.android.soundmap.network.SimpleVolley;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.moac.android.soundmap.injection.component.ApplicationComponent;
+import com.moac.android.soundmap.injection.component.DaggerApplicationComponent;
+import com.moac.android.soundmap.injection.module.ApiModule;
+import com.moac.android.soundmap.injection.module.ApplicationModule;
+import com.moac.android.soundmap.injection.module.ConfigModule;
+import com.moac.android.soundmap.injection.module.ImagesModule;
 
 public class SoundMapApplication extends Application {
 
     private static final String TAG = SoundMapApplication.class.getSimpleName();
 
-    private static SimpleVolley sVolley;
-    private static ApiClient sApiClient;
-    private static Gson sGson = new GsonBuilder().registerTypeAdapter(GeoLocationTag.class, new GeoLocationDeserializer()).create();
+    private ApplicationComponent applicationComponent;
 
-    @Override
-    public void onCreate() {
-        Log.i(TAG, "onCreate() - start");
+    @Override public void onCreate() {
         super.onCreate();
-        sVolley = initVolley();
-        sApiClient = initApiClient(sVolley.getRequestQueue(), sGson);
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .apiModule(new ApiModule())
+                .imagesModule(new ImagesModule())
+                .configModule(new ConfigModule())
+                .build();
+        component().inject(this);
     }
 
-    public static ApiClient getApiClient() {
-        return sApiClient;
-    }
-
-    public static SimpleVolley getVolley() {
-        return sVolley;
-    }
-
-    private SimpleVolley initVolley() {
-        return new SimpleVolley(getApplicationContext());
-    }
-
-    private ApiClient initApiClient(RequestQueue requestQueue, Gson gson) {
-        Log.i(TAG, "initApiClient() - start");
-
-        InputStream inputStream = null;
-        try {
-            inputStream = getAssets().open("soundcloud.properties");
-            Properties properties = new Properties();
-            properties.load(inputStream);
-
-            String apiScheme = properties.getProperty("host.scheme");
-            String apiDomain = properties.getProperty("host.domain");
-            String clientId = properties.getProperty("client.id");
-            String clientSecret = properties.getProperty("client.secret");
-            Log.i(TAG, "initApiClient() - creating with clientId: " + clientId + " clientSecret: " + clientSecret);
-
-            return new ApiClient(requestQueue, gson, apiScheme, apiDomain, clientId);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to initialise API Client", e);
-            throw new RuntimeException("Unable to initialise API Client");
-        } finally {
-            safeClose(inputStream);
-        }
-    }
-
-    private void safeClose(InputStream stream) {
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (IOException ignored) {
-                // Ignore
-            }
-        }
+    public ApplicationComponent component() {
+        return applicationComponent;
     }
 }
