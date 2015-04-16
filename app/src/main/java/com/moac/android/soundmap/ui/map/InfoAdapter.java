@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.adapter;
+package com.moac.android.soundmap.ui.map;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.moac.android.soundmap.R;
-import com.moac.android.soundmap.ui.map.CachedMarkerTarget;
 import com.moac.android.soundmap.viewmodel.MarkerViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -42,34 +41,38 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(final Marker marker) {
         Log.i(TAG, "getInfoContents() started: " + marker.getId());
         @SuppressLint("InflateParams") // Ok for popup view
-        final View popup = inflater.inflate(R.layout.popup_view, null);
+        final View popup = inflater.inflate(R.layout.view_popup, null);
 
-        ImageView imageView = (ImageView) popup.findViewById(R.id.track_imageview);
-        TextView titleTextView = (TextView) popup.findViewById(R.id.track_title_textview);
-        TextView userTextView = (TextView) popup.findViewById(R.id.username_textview);
-
-        titleTextView.setText(marker.getTitle());
-        userTextView.setText(marker.getSnippet());
+        ImageView waveformImageView = (ImageView) popup.findViewById(R.id.imageView_waveform);
+        TextView titleTextView = (TextView) popup.findViewById(R.id.textView_title);
+        TextView userTextView = (TextView) popup.findViewById(R.id.textView_username);
+        TextView descriptionTextView = (TextView) popup.findViewById(R.id.textView_description);
 
         // Find the model associated with this Marker
         MarkerViewModel markerViewModel = markerMap.get(marker.getId());
 
+        // Populate InfoWindow fields
+        titleTextView.setText(marker.getTitle());
+        userTextView.setText(marker.getSnippet());
+        descriptionTextView.setText(markerViewModel.getSound().getDescription());
+
         // The the Sound's displayed image URL
         String imageUrl = markerViewModel.getImageUrl();
+        loadWaveformInto(marker, waveformImageView, imageUrl);
 
-        // Check if the bitmap is still immediately available
-        // Sound image not available (temporarily or permanently) - set placeholder
+        return popup;
+    }
+
+    private void loadWaveformInto(final Marker marker, final ImageView waveformImageView, final String imageUrl) {
         Drawable placeholderDrawable = inflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
         if (target != null) {
             picasso.cancelRequest(target);
         }
-        target = new CachedMarkerTarget(marker, imageView);
+        target = new CachedMarkerTarget(marker, waveformImageView);
         picasso.load(imageUrl)
                 .error(placeholderDrawable)
                 .placeholder(placeholderDrawable)
                 .into(target);
-
-        return popup;
     }
 
 }

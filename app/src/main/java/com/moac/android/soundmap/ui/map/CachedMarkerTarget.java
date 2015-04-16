@@ -21,7 +21,7 @@ import com.squareup.picasso.Target;
  * So by forcing a re-render after receiving a cache miss, then we get a cache hit - which is loaded
  * synchronously and hence the image is displayed.
  *
- * Very bad things could happen if the image loading never manages to return a cached response; this
+ * WARNING: Very bad things could happen if the image loading never manages to return a cached response; this
  * will loop infinitely.
  */
 public class CachedMarkerTarget implements Target {

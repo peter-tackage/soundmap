@@ -48,4 +48,17 @@ public final class SoundJsonModel {
     public String getUsername() {
         return username;
     }
+
+    @Override public String toString() {
+        return "SoundJsonModel{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", name='" + name + '\'' +
+                ", tags=" + tags +
+                ", description='" + description + '\'' +
+                ", geotag=" + geotag +
+                ", username='" + username + '\'' +
+                ", images=" + images +
+                '}';
+    }
 }

@@ -13,7 +13,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.moac.android.soundmap.adapter.InfoAdapter;
 import com.moac.android.soundmap.api.model.SoundImageFormat;
 import com.moac.android.soundmap.api.model.SoundJsonModel;
 import com.moac.android.soundmap.api.model.SoundListJsonModel;
@@ -108,7 +107,7 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
             clearMap();
             for (SoundJsonModel sound : sounds) {
                 GeoLocation location = sound.getGeotag();
-                Log.v(TAG, "onResponse() - GEO IS: " + location);
+                Log.v(TAG, "onResponse() - sound: " + sound.toString());
                 if (location != null) {
                     Marker marker = getMap().addMarker(
                             new MarkerOptions()
