@@ -3,8 +3,7 @@ package com.moac.android.soundmap.ui.activity;
 import com.moac.android.soundmap.injection.component.ApplicationComponent;
 import com.moac.android.soundmap.injection.component.BaseActivityComponent;
 import com.moac.android.soundmap.injection.module.ActivityModule;
-import com.moac.android.soundmap.injection.module.PerActivity;
-import com.moac.android.soundmap.ui.activity.MainActivity;
+import com.moac.android.soundmap.injection.component.PerActivity;
 import com.moac.android.soundmap.ui.fragment.SoundMapFragment;
 
 import dagger.Component;

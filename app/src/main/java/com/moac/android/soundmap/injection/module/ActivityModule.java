@@ -3,7 +3,7 @@ package com.moac.android.soundmap.injection.module;
 import android.app.Activity;
 import android.content.Context;
 
-import javax.inject.Singleton;
+import com.moac.android.soundmap.injection.component.PerActivity;
 
 import dagger.Module;
 import dagger.Provides;
