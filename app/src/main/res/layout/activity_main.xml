@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/map_fragment"
-        class="com.moac.android.soundmap.ui.fragment.SoundMapFragment"
+        class="com.moac.android.soundmap.ui.map.SoundMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

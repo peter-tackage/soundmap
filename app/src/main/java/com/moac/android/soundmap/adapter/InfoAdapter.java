@@ -1,10 +1,8 @@
 package com.moac.android.soundmap.adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +11,10 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.moac.android.soundmap.R;
+import com.moac.android.soundmap.ui.map.CachedMarkerTarget;
 import com.moac.android.soundmap.viewmodel.MarkerViewModel;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.Map;
 
@@ -23,12 +24,13 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final LayoutInflater inflater;
     private final Map<String, MarkerViewModel> markerMap;
-    private final LruCache<String, Bitmap> bitmapCache;
+    private final Picasso picasso;
+    private Target target;
 
-    public InfoAdapter(LayoutInflater inflater, Map<String, MarkerViewModel> markerMap, LruCache<String, Bitmap> bitmapCache) {
+    public InfoAdapter(LayoutInflater inflater, Map<String, MarkerViewModel> markerMap, Picasso picasso) {
         this.inflater = inflater;
         this.markerMap = markerMap;
-        this.bitmapCache = bitmapCache;
+        this.picasso = picasso;
     }
 
     @Override
@@ -51,28 +53,23 @@ public class InfoAdapter implements GoogleMap.InfoWindowAdapter {
 
         // Find the model associated with this Marker
         MarkerViewModel markerViewModel = markerMap.get(marker.getId());
-        // Use the Sound's displayed image URL to key the cache
-        String cacheKey = markerViewModel.getImageUrl();
+
+        // The the Sound's displayed image URL
+        String imageUrl = markerViewModel.getImageUrl();
 
         // Check if the bitmap is still immediately available
-        Bitmap bitmap = bitmapCache.get(cacheKey);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-        } else {
-            // Sound image not available (temporarily or permanently) - set placeholder
-            Drawable placeholderDrawable = inflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
-            imageView.setImageDrawable(placeholderDrawable);
+        // Sound image not available (temporarily or permanently) - set placeholder
+        Drawable placeholderDrawable = inflater.getContext().getResources().getDrawable(R.drawable.ic_soundcloud);
+        if (target != null) {
+            picasso.cancelRequest(target);
         }
-
-        // Note: It is impossible to asynchronously load the image into the
-        // the ImageView here. The contents of the returned view is rendered as an
-        // image once it is returned from this call.
-
-        // Picasso cache hits via Picasso's get() would actually successfully rendered here as the
-        // async/network call is never actually made, hence the image contents are ready.
-        // However, we can't rely on this as if the image is not cached then a potentially long
-        // blocking operation will occur.
+        target = new CachedMarkerTarget(marker, imageView);
+        picasso.load(imageUrl)
+                .error(placeholderDrawable)
+                .placeholder(placeholderDrawable)
+                .into(target);
 
         return popup;
     }
+
 }

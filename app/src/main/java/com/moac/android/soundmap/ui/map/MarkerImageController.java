@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.ui.fragment;
+package com.moac.android.soundmap.ui.map;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -15,6 +15,7 @@ import javax.inject.Inject;
  * @author Peter Tackage
  * @since 14/04/15
  */
+@Deprecated
 public class MarkerImageController {
 
     private static final String TAG = MarkerImageController.class.getSimpleName();

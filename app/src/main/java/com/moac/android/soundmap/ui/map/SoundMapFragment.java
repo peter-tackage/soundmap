@@ -1,9 +1,7 @@
-package com.moac.android.soundmap.ui.fragment;
+package com.moac.android.soundmap.ui.map;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +19,8 @@ import com.moac.android.soundmap.api.model.SoundJsonModel;
 import com.moac.android.soundmap.api.model.SoundListJsonModel;
 import com.moac.android.soundmap.model.GeoLocation;
 import com.moac.android.soundmap.provider.SearchProvider;
-import com.moac.android.soundmap.ui.activity.MainActivity;
-import com.moac.android.soundmap.ui.activity.MainComponent;
 import com.moac.android.soundmap.viewmodel.MarkerViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,10 +42,7 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
     SearchProvider searchProvider;
 
     @Inject
-    LruCache<String, Bitmap> bitmapCache;
-
-    @Inject
-    MarkerImageController markerImageController;
+    Picasso picasso;
 
     // TODO Size based on default fetch size
     // Maps Marker Id to ViewModel
@@ -67,15 +61,13 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.i(TAG, "onViewCreated() - start");
-        getMap().setInfoWindowAdapter(new InfoAdapter(getActivity().getLayoutInflater(), markerMap, bitmapCache));
         super.onViewCreated(view, savedInstanceState);
+        getMap().setInfoWindowAdapter(new InfoAdapter(getActivity().getLayoutInflater(), markerMap, picasso));
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         getMap().animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-        String url = markerMap.get(marker.getId()).getImageUrl();
-        markerImageController.loadImageInto(url, marker);
         marker.showInfoWindow();
         return true;
     }
@@ -89,7 +81,8 @@ public class SoundMapFragment extends SupportMapFragment implements GoogleMap.On
                     }
                 })
                 .map(new Func1<SoundListJsonModel, List<SoundJsonModel>>() {
-                    @Override public List<SoundJsonModel> call(SoundListJsonModel soundListJsonModel) {
+                    @Override
+                    public List<SoundJsonModel> call(SoundListJsonModel soundListJsonModel) {
                         return soundListJsonModel.getResults();
                     }
                 })

@@ -12,10 +12,9 @@ import com.moac.android.soundmap.injection.module.DataModule;
 import com.moac.android.soundmap.injection.module.ForApplication;
 import com.moac.android.soundmap.injection.module.ImagesModule;
 import com.moac.android.soundmap.provider.SearchProvider;
-import com.moac.android.soundmap.ui.fragment.MarkerImageController;
+import com.moac.android.soundmap.ui.map.MarkerImageController;
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Component;

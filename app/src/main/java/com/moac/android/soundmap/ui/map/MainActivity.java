@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.ui.activity;
+package com.moac.android.soundmap.ui.map;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.view.View;
 import com.moac.android.soundmap.R;
 import com.moac.android.soundmap.SoundMapApplication;
 import com.moac.android.soundmap.injection.module.ActivityModule;
-import com.moac.android.soundmap.ui.fragment.SoundMapFragment;
 
 public final class MainActivity extends ActionBarActivity {
 

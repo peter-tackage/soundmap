@@ -1,10 +1,9 @@
-package com.moac.android.soundmap.ui.activity;
+package com.moac.android.soundmap.ui.map;
 
 import com.moac.android.soundmap.injection.component.ApplicationComponent;
 import com.moac.android.soundmap.injection.component.BaseActivityComponent;
 import com.moac.android.soundmap.injection.module.ActivityModule;
 import com.moac.android.soundmap.injection.component.PerActivity;
-import com.moac.android.soundmap.ui.fragment.SoundMapFragment;
 
 import dagger.Component;
 
