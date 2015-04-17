@@ -21,16 +21,22 @@ android {
     dependencies {
         compile 'com.android.support:appcompat-v7:22.0.0'
         compile 'com.google.android.gms:play-services-maps:7.0.0'
-        compile 'com.google.code.gson:gson:2.3.1'
-        compile 'com.squareup.retrofit:retrofit:1.9.0'
 
         compile 'com.google.dagger:dagger:2.0'
         apt 'com.google.dagger:dagger-compiler:2.0'
         provided 'org.glassfish:javax.annotation:10.0-b28'
 
+        compile 'com.squareup.okhttp:okhttp:2.2.0'
+        compile 'com.google.code.gson:gson:2.3.1'
+        compile 'com.squareup.retrofit:retrofit:1.9.0'
         compile 'com.squareup.picasso:picasso:2.5.2'
+
         compile 'io.reactivex:rxjava:1.0.9'
         compile 'io.reactivex:rxandroid:0.24.0'
+
+        // Stetho
+        compile 'com.facebook.stetho:stetho:1.1.0'
+        compile 'com.facebook.stetho:stetho-okhttp:1.1.0'
 
         testCompile 'junit:junit:4.12'
         testCompile "org.mockito:mockito-core:1.9.5"

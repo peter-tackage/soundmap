@@ -2,6 +2,7 @@ package com.moac.android.soundmap;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.moac.android.soundmap.injection.component.ApplicationComponent;
 import com.moac.android.soundmap.injection.component.DaggerApplicationComponent;
 import com.moac.android.soundmap.injection.module.ApiModule;
@@ -17,6 +18,7 @@ public class SoundMapApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
+        initStetho();
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .apiModule(new ApiModule())
@@ -24,9 +26,20 @@ public class SoundMapApplication extends Application {
                 .configModule(new ConfigModule())
                 .build();
         component().inject(this);
+
     }
 
     public ApplicationComponent component() {
         return applicationComponent;
+    }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
     }
 }
