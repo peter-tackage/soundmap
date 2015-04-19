@@ -27,24 +27,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             tools:text="Username"/>
 
         <TextView
             android:id="@+id/textView_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black"
             tools:text="Title"/>
 
         <TextView
             android:id="@+id/textView_description"
-            android:layout_marginTop="@dimen/size_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="@dimen/size_2"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black"
             tools:text="A long description text"/>
     </LinearLayout>
 
