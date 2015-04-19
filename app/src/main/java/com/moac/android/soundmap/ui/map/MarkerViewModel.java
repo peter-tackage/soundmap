@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.viewmodel;
+package com.moac.android.soundmap.ui.map;
 
 import com.moac.android.soundmap.api.model.SoundImageFormat;
 import com.moac.android.soundmap.api.model.SoundJsonModel;

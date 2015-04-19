@@ -18,7 +18,6 @@ import com.moac.android.soundmap.api.model.SoundJsonModel;
 import com.moac.android.soundmap.api.model.SoundListJsonModel;
 import com.moac.android.soundmap.api.model.GeoLocation;
 import com.moac.android.soundmap.provider.SearchProvider;
-import com.moac.android.soundmap.viewmodel.MarkerViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.moac.android.soundmap.R;
-import com.moac.android.soundmap.viewmodel.MarkerViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
