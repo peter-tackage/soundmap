@@ -1,4 +1,4 @@
-package com.moac.android.soundmap.model;
+package com.moac.android.soundmap.api.model;
 
 public class GeoLocation {
 

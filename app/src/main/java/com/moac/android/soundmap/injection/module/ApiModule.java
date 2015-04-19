@@ -9,7 +9,7 @@ import com.moac.android.soundmap.api.FreeSoundApi;
 import com.moac.android.soundmap.api.FreeSoundApiInterceptor;
 import com.moac.android.soundmap.api.model.GeoLocationDeserializer;
 import com.moac.android.soundmap.api.model.SoundListJsonModel;
-import com.moac.android.soundmap.model.GeoLocation;
+import com.moac.android.soundmap.api.model.GeoLocation;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 

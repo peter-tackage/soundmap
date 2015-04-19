@@ -1,7 +1,6 @@
 package com.moac.android.soundmap.api.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.moac.android.soundmap.model.GeoLocation;
 
 import java.util.List;
 import java.util.Map;

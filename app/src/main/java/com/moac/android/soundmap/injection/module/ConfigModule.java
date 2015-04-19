@@ -16,7 +16,7 @@ public class ConfigModule {
 
     @Provides @Singleton @Named(ApiModule.API_TOKEN_CONFIG)
     public String provideApiModuleApiTokenConfig() {
-        throw new IllegalStateException("No Api Token defined");
+        return "2c07851ee5c1f2f44248adb4568bfb142e8b7f62";
     }
 
     @Provides @Singleton @Named(ApiModule.SEARCH_CACHE_SIZE_CONFIG)
