@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MyTheme" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <!-- Set AppCompat’s actionBarStyle -->
-        <item name="actionBarStyle">@style/MyActionBarStyle</item>
-        <item name="colorAccent">@android:color/holo_orange_dark</item>
+    <!-- General information - http://www.vogella.com/tutorials/AndroidStylesThemes/article.html -->
+
+    <style name="AppTheme" parent="AppTheme.Base"/>
+
+    <!-- Refer - http://android-developers.blogspot.de/2014/10/appcompat-v21-material-design-for-pre.html-->
+
+    <!-- NoActionBar theme to disable the default decor-provided Action Bar to permit the
+     setSupportActionBar() using the layout provided Toolbar -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <!-- These values don't directly set the styling for the Toolbar, they only do it for the ActionBar.
+            The Toolbar styling is set in the layout via its own ThemeOverlay -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@android:color/white</item>
     </style>
 
-    <style name="MyActionBarStyle" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <!-- ThemeOverlay styles only overwrite relevant attributes -->
+    <!-- Refer - https://chris.banes.me/2014/11/12/theme-vs-style/ -->
+    <style name="MyToolbarStyle" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <!-- As far as I can see, the underline styling is no longer available for the SearchView
+    when using AppCompat 22.1.0. Previously it would be controlled by colorAccent -->
 
 </resources>

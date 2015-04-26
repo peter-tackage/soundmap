@@ -1,5 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_frame"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,15 +7,20 @@
         android:id="@+id/map_fragment"
         class="com.moac.android.soundmap.ui.map.SoundMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
+    <!-- Using ?attr refers to a style attribute in the currently active theme;
+     could use ?attr/colorPrimary for solid styling instead -->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize" />
+        android:background="@color/semiTransparentColorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/MyToolbarStyle"/>
+
+    <!-- Use android:theme, not app:theme since AppCompat 22.1.0 -->
 
 </FrameLayout>
 

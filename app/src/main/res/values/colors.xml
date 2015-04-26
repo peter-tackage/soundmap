@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base Material Design colors -->
+    <color name="colorPrimary">#CB3D44</color>
+    <color name="colorPrimaryDark">#BA2C33</color>
+    <color name="colorAccent">@android:color/white</color>
+
+    <!-- Variations -->
+    <color name="semiTransparentColorPrimary">#CFCB3D44</color>
+</resources>

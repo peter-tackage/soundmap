@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +18,7 @@ import com.moac.android.soundmap.R;
 import com.moac.android.soundmap.SoundMapApplication;
 import com.moac.android.soundmap.injection.module.ActivityModule;
 
-public final class MainActivity extends ActionBarActivity {
+public final class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -52,23 +52,6 @@ public final class MainActivity extends ActionBarActivity {
         handleIntent(intent);
     }
 
-    public MainComponent component() {
-        if (component == null) {
-            component = DaggerMainComponent.builder()
-                    .applicationComponent(((SoundMapApplication) getApplication()).component())
-                    .activityModule(new ActivityModule(this))
-                    .build();
-        }
-        return component;
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doSearch(query);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XML
@@ -90,6 +73,23 @@ public final class MainActivity extends ActionBarActivity {
         });
         // Note: I don't register callbacks to invoke the search query - use the Intents instead.
         return true;
+    }
+
+    public MainComponent component() {
+        if (component == null) {
+            component = DaggerMainComponent.builder()
+                    .applicationComponent(((SoundMapApplication) getApplication()).component())
+                    .activityModule(new ActivityModule(this))
+                    .build();
+        }
+        return component;
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doSearch(query);
+        }
     }
 
     private void doSearch(String query) {
