@@ -14,6 +14,8 @@ import javax.inject.Inject;
 /**
  * @author Peter Tackage
  * @since 14/04/15
+ *
+ * @deprecated Rely on Picasso cache, rather than manually caching.
  */
 @Deprecated
 public class MarkerImageController {
